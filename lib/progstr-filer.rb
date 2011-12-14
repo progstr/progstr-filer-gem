@@ -1,0 +1,1 @@
+require 'filer/config'
