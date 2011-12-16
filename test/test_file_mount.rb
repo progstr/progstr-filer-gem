@@ -28,12 +28,6 @@ class User < ActiveRecord::Base
   has_uploader :avatar, AvatarUploader
 end
 
-class FileLike
-  def read
-    "contents"
-  end
-end
-
 class TestFileMount < Test::Unit::TestCase
   def setup
     TestUserMigration.up

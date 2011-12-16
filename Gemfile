@@ -19,3 +19,4 @@ group :development do
 end
 
 gem "activerecord", ">=3.0.0"
+gem "uuid"
