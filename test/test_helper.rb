@@ -5,6 +5,7 @@ require 'progstr-filer'
 
 require 'test/unit'
 require 'shoulda'
+require 'pp'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
