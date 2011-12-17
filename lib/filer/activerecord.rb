@@ -8,6 +8,7 @@ module Progstr
           @uploaders = {}
           @uploaders = superclass._uploaders.merge(@uploaders) if superclass.respond_to?(:_uploaders)
           after_save :"_filer_after_save"
+          before_destroy :"_filer_before_delete"
         end
         @uploaders
       end
@@ -88,6 +89,18 @@ module Progstr
 
       def _filer_after_save
         _upload_attachments
+        _delete_expired_attachments
+      end
+
+      def _expire_all_attachments
+        _attachments.each do |item|
+          attribute = item[0]
+          _set_attachment(attribute, nil)
+        end
+      end
+
+      def _filer_before_delete
+        _expire_all_attachments
         _delete_expired_attachments
       end
     end

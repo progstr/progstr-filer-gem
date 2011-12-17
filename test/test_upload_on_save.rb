@@ -38,4 +38,16 @@ class TestUploadOnSave < UserTest
     u.save!
     assert_same $lastDeletedAtachment.file, f1, "overwritten attachment deleted"
   end
+
+  should "delete attachments on record delete" do
+    u = NotUploadingUser.new
+    f1 = FileLike.new
+    u.avatar = f1
+    u.save!
+
+    # Note that calling `delete` doesn't run the before_destroy hook and attachments won't get deleted
+    # u.delete
+    u.destroy
+    assert_same $lastDeletedAtachment.file, f1, "overwritten attachment deleted"
+  end
 end
