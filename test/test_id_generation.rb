@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class TestIdGeneration < Test::Unit::TestCase
-  should "attachment IDs are UUIDs" do
+  should "use UUIDs for attachment IDs" do
     a = Progstr::Filer::Attachment.from_file(FileLike.new)
     b = Progstr::Filer::Attachment.from_file(FileLike.new)
 
@@ -10,7 +10,7 @@ class TestIdGeneration < Test::Unit::TestCase
     assert_not_equal a.id, b.id
   end
 
-  should "attachment IDs have hyphens removed" do
+  should "have attachment IDs with no hyphens" do
     a = Progstr::Filer::Attachment.from_file(FileLike.new)
     assert_match /^[^-]+$/, a.id, "IDs should contain no hyphens"
   end
