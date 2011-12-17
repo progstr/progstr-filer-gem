@@ -3,9 +3,12 @@ require 'active_record'
 module Progstr
   module Filer
     module ActiveRecordClassMethods
-      def uploaders
-        @uploaders ||= {}
-        @uploaders = superclass.uploaders.merge(@uploaders) if superclass.respond_to?(:uploaders)
+      def _uploaders
+        if @uploaders.nil?
+          @uploaders = {}
+          @uploaders = superclass._uploaders.merge(@uploaders) if superclass.respond_to?(:_uploaders)
+          after_save :"_upload_attachments!"
+        end
         @uploaders
       end
 
@@ -17,7 +20,12 @@ module Progstr
           def #{attribute}=(new_file)
             _set_attachment(:#{attribute}, new_file)
           end
+          def upload_#{attribute}!
+            _upload_attachment(:#{attribute})
+          end
         RUBY
+
+        _uploaders[attribute] = uploaderClass.new
       end
     end
 
@@ -33,7 +41,7 @@ module Progstr
           if id.nil?
             _attachments[attribute] = Attachment.empty
           else
-            _attachments[attribute] = Attachment.from_id(id)
+            _attachments[attribute] = Attachment.from_id(attribute, id)
           end
         else
           _attachments[attribute]
@@ -41,9 +49,24 @@ module Progstr
       end
 
       def _set_attachment(attribute, file)
-        attachment = Attachment.from_file(file)
+        attachment = Attachment.from_file(attribute, file)
         _attachments[attribute] = attachment
         write_attribute(attribute, attachment.id)
+      end
+
+      def _upload_attachments!
+          self.class._uploaders.each do |item|
+            attribute = item[0]
+            _upload_attachment!(attribute)
+          end
+      end
+
+      def _upload_attachment!(attribute)
+        attachment = _get_attachment(attribute)
+        if (!attachment.empty?) && (!attachment.file.nil?)
+          uploader = self.class._uploaders[attribute]
+          uploader.upload_attachment(attachment) unless uploader.nil?
+        end
       end
     end
   end

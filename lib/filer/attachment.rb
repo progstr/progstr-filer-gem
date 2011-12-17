@@ -1,7 +1,7 @@
 module Progstr
   module Filer
     class Attachment
-      attr_accessor :id, :file
+      attr_accessor :id, :attribute, :file
 
       @@id_generator = ::UUID.new
 
@@ -15,9 +15,10 @@ module Progstr
         EmptyAttachment.new
       end
 
-      def self.from_file(file)
+      def self.from_file(attribute, file)
         result = Attachment.new
         result.id = generate_id
+        result.attribute = attribute
         result.file = file
         result
       end
@@ -27,9 +28,10 @@ module Progstr
         uuid.gsub("-", "")
       end
 
-      def self.from_id(id)
+      def self.from_id(attribute, id)
         result = Attachment.new
         result.id = id
+        result.attribute = attribute
         result
       end
 

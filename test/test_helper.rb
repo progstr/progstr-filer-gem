@@ -6,6 +6,7 @@ require 'progstr-filer'
 require 'test/unit'
 require 'shoulda'
 require 'file_like'
+require 'user_data'
 require 'pp'
 
 # Requires supporting files with custom matchers and macros, etc,
