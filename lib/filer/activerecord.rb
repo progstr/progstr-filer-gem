@@ -7,7 +7,7 @@ module Progstr
         if @uploaders.nil?
           @uploaders = {}
           @uploaders = superclass._uploaders.merge(@uploaders) if superclass.respond_to?(:_uploaders)
-          after_save :"_upload_attachments!"
+          after_save :"_filer_after_save"
         end
         @uploaders
       end
@@ -35,6 +35,11 @@ module Progstr
         @_filer_attachments
       end
 
+      def _attachments_to_delete
+        @_filer_attachments_to_delete ||= []
+        @_filer_attachments_to_delete
+      end
+
       def _get_attachment(attribute)
         if _attachments[attribute].nil?
           id = read_attribute(attribute)
@@ -49,24 +54,41 @@ module Progstr
       end
 
       def _set_attachment(attribute, file)
+        old_attachment = _get_attachment(attribute)
+        unless old_attachment.empty?
+          _attachments_to_delete << old_attachment
+        end
+
         attachment = Attachment.from_file(attribute, file)
         _attachments[attribute] = attachment
         write_attribute(attribute, attachment.id)
       end
 
-      def _upload_attachments!
+      def _upload_attachments
           self.class._uploaders.each do |item|
             attribute = item[0]
-            _upload_attachment!(attribute)
+            _upload_attachment(attribute)
           end
       end
 
-      def _upload_attachment!(attribute)
+      def _upload_attachment(attribute)
         attachment = _get_attachment(attribute)
         if (!attachment.empty?) && (!attachment.file.nil?)
           uploader = self.class._uploaders[attribute]
           uploader.upload_attachment(attachment) unless uploader.nil?
         end
+      end
+
+      def _delete_expired_attachments
+        _attachments_to_delete.each do |attachment|
+          uploader = self.class._uploaders[attachment.attribute]
+          uploader.delete_attachment(attachment) unless uploader.nil?
+        end
+      end
+
+      def _filer_after_save
+        _upload_attachments
+        _delete_expired_attachments
       end
     end
   end
