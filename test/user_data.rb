@@ -19,11 +19,21 @@ class TestUserMigration < ActiveRecord::Migration
   end
 end
 
-class AvatarUploader < Progstr::Filer::Uploader
+$lastUploadedAtachment = nil
+$lastDeletedAtachment = nil
+
+class MockUploader < Progstr::Filer::Uploader
+  def upload_attachment(attachment)
+    $lastUploadedAtachment = attachment
+  end
+  def delete_attachment(attachment)
+    $lastDeletedAtachment = attachment
+  end
 end
 
+
 class User < ActiveRecord::Base
-  has_uploader :avatar, AvatarUploader
+  has_uploader :avatar, MockUploader
 end
 
 

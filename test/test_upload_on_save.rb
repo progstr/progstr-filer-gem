@@ -1,24 +1,8 @@
 require 'test_helper'
 
-$lastUploadedAtachment = nil
-$lastDeletedAtachment = nil
-
-class MockUploader < Progstr::Filer::Uploader
-  def upload_attachment(attachment)
-    $lastUploadedAtachment = attachment
-  end
-  def delete_attachment(attachment)
-    $lastDeletedAtachment = attachment
-  end
-end
-
-class NotUploadingUser < User
-  has_uploader :avatar, MockUploader
-end
-
 class TestUploadOnSave < UserTest
   should "upload file on record save" do
-    u = NotUploadingUser.new
+    u = User.new
     f = FileLike.new
     u.avatar = f
 
@@ -27,7 +11,7 @@ class TestUploadOnSave < UserTest
   end
 
   should "delete the previous attachment on save" do
-    u = NotUploadingUser.new
+    u = User.new
     f1 = FileLike.new
     u.avatar = f1
     u.save!
@@ -40,7 +24,7 @@ class TestUploadOnSave < UserTest
   end
 
   should "delete attachments on record delete" do
-    u = NotUploadingUser.new
+    u = User.new
     f1 = FileLike.new
     u.avatar = f1
     u.save!
