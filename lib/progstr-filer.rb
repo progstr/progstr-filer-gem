@@ -1,3 +1,5 @@
+require 'digest'
+require 'rest-client'
 require 'uuid'
 UUID.state_file = false
 
