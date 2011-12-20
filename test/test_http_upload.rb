@@ -4,6 +4,7 @@ class DemoUploader < Progstr::Filer::Uploader
 end
 
 class TestHttpUpload < Test::Unit::TestCase
+  # The mother of all tests calling the real API
   test "upload attachment" do
     attachment = Progstr::Filer::Attachment.from_file(:version, File.open("VERSION"))
     uploader = DemoUploader.new
