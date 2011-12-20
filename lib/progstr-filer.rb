@@ -6,6 +6,7 @@ UUID.state_file = false
 require 'filer/config'
 require 'filer/uploader'
 require 'filer/attachment'
+require 'filer/file_info'
 require 'filer/activerecord'
 
 class ApiError < StandardError
@@ -16,10 +17,10 @@ class ApiError < StandardError
   end
 
   def message
-    @server_response.message
+    @server_response["message"]
   end
 
   def http_code
-    @server_response.httpCode
+    @server_response["httpCode"]
   end
 end

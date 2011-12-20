@@ -55,7 +55,17 @@ module Progstr
           response = RestClient.delete(url, json_headers)
           UploadStatus.new MultiJson.decode(response)
         rescue => e
-          raise ApiError.new(UploadStatus.new MultiJson.decode(e.response))
+          raise ApiError.new(MultiJson.decode(e.response))
+        end
+      end
+
+      def file_info(attachment)
+        url = "#{url_prefix}files/#{attachment.id}"
+        begin
+          response = RestClient.get(url, json_headers)
+          FileInfo.new MultiJson.decode(response)
+        rescue => e
+          raise ApiError.new(MultiJson.decode(e.response))
         end
       end
     end

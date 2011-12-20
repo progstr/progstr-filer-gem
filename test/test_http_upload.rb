@@ -13,6 +13,25 @@ class TestHttpUpload < Test::Unit::TestCase
     assert_equal response.success, true
     assert_equal response.message, "OK"
 
+    info = nil
+    retries = 0
+    begin
+      info = uploader.file_info attachment
+    rescue => e
+      if e.http_code == 404 && retries < 5
+        retries += 1
+        sleep 0.2
+        retry
+      end
+    end
+
+    assert_equal info.name, "VERSION"
+    assert_equal info.id, attachment.id
+    assert_equal info.content_type, "text/plain"
+    assert_equal info.property, "version"
+    assert_equal info.uploader, "DemoUploader"
+    assert_true info.size > 0
+
     response = uploader.delete_attachment attachment
     assert_equal response.message, "OK"
   end
