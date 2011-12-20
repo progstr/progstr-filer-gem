@@ -60,7 +60,7 @@ module Progstr
       end
 
       def file_info(attachment)
-        url = "#{url_prefix}files/#{attachment.id}"
+        url = "#{url_prefix}files/info/#{attachment.id}"
         begin
           response = RestClient.get(url, json_headers)
           FileInfo.new MultiJson.decode(response)
