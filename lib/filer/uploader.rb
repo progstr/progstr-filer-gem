@@ -17,15 +17,46 @@ module Progstr
     end
 
     class Uploader
+      def url_prefix
+        prefix = "http://#{Progstr::Filer.host}:#{Progstr::Filer.port}#{Progstr::Filer.path_prefix}"
+        if prefix.end_with? "/"
+          prefix
+        else
+          prefix + "/"
+        end
+      end
+
+      def json_headers
+        {
+          :accept => "application/json",
+          :"X-Progstr-Filer-Auth-Token" => Progstr::Filer.generate_auth_token,
+        }
+      end
+
       def upload_attachment(attachment)
-        url = "http://#{Progstr::Filer.host}:#{Progstr::Filer.port}#{Progstr::Filer.path_prefix}/upload/new"
-        response = RestClient.post("http://filer.local:8080/upload/new", {
-                    :upload1 => attachment.file,
-                    :authToken => Progstr::Filer.generate_auth_token,
-                    :id => attachment.id
-                  },
-                  { :accept => "application/json" })
-        UploadStatus.new MultiJson.decode(response)
+        url = "#{url_prefix}upload/new"
+        begin
+          response = RestClient.post(url, {
+                      :upload1 => attachment.file,
+                      :authToken => Progstr::Filer.generate_auth_token,
+                      :property => attachment.attribute,
+                      :uploader => self.class.name,
+                      :id => attachment.id
+                    }, json_headers)
+          UploadStatus.new MultiJson.decode(response)
+        rescue => e
+          raise ApiError.new(UploadStatus.new MultiJson.decode(e.response))
+        end
+      end
+
+      def delete_attachment(attachment)
+        url = "#{url_prefix}files/#{attachment.id}"
+        begin
+          response = RestClient.delete(url, json_headers)
+          UploadStatus.new MultiJson.decode(response)
+        rescue => e
+          raise ApiError.new(UploadStatus.new MultiJson.decode(e.response))
+        end
       end
     end
   end

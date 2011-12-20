@@ -12,6 +12,9 @@ class TestHttpUpload < Test::Unit::TestCase
     assert_equal response.name, "VERSION"
     assert_equal response.success, true
     assert_equal response.message, "OK"
+
+    response = uploader.delete_attachment attachment
+    assert_equal response.message, "OK"
   end
 
   test "report error on failed upload" do
@@ -28,5 +31,4 @@ class TestHttpUpload < Test::Unit::TestCase
       Progstr::Filer.secret_key = "DEMO"
     end
   end
-
 end
