@@ -17,15 +17,6 @@ module Progstr
     end
 
     class Uploader
-      def url_prefix
-        prefix = "http://#{Progstr::Filer.host}:#{Progstr::Filer.port}#{Progstr::Filer.path_prefix}"
-        if prefix.end_with? "/"
-          prefix
-        else
-          prefix + "/"
-        end
-      end
-
       def json_headers
         {
           :accept => "application/json",
@@ -34,7 +25,7 @@ module Progstr
       end
 
       def upload_attachment(attachment)
-        url = "#{url_prefix}upload/new"
+        url = "#{Progstr::Filer.url_prefix}upload/new"
         begin
           response = RestClient.post(url, {
                       :upload1 => attachment.file,
@@ -50,7 +41,7 @@ module Progstr
       end
 
       def delete_attachment(attachment)
-        url = "#{url_prefix}files/#{attachment.id}"
+        url = "#{Progstr::Filer.url_prefix}files/#{attachment.id}"
         begin
           response = RestClient.delete(url, json_headers)
           UploadStatus.new MultiJson.decode(response)
@@ -60,7 +51,7 @@ module Progstr
       end
 
       def file_info(attachment)
-        url = "#{url_prefix}files/info/#{attachment.id}"
+        url = "#{Progstr::Filer.url_prefix}files/info/#{attachment.id}"
         begin
           response = RestClient.get(url, json_headers)
           FileInfo.new MultiJson.decode(response)

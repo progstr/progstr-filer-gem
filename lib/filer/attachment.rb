@@ -40,7 +40,11 @@ module Progstr
       end
 
       def url
-        ""
+        if !empty?
+          "#{Progstr::Filer.url_prefix}files/data/#{Progstr::Filer.access_key}/#{id}"
+        else
+          ""
+        end
       end
     end
   end

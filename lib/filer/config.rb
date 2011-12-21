@@ -24,6 +24,15 @@ module Progstr
         signature = Digest::SHA1.hexdigest(data)
         "#{access_key}-#{expiration_millis}-#{signature}"
       end
+
+      def url_prefix
+        prefix = "http://#{Progstr::Filer.host}:#{Progstr::Filer.port}#{Progstr::Filer.path_prefix}"
+        if prefix.end_with? "/"
+          prefix
+        else
+          prefix + "/"
+        end
+      end
     end
   end
 end
