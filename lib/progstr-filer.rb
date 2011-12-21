@@ -1,3 +1,4 @@
+require 'pp'
 require 'digest'
 require 'rest-client'
 require 'uuid'

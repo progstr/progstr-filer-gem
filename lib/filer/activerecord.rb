@@ -66,10 +66,10 @@ module Progstr
       end
 
       def _upload_attachments
-          self.class._uploaders.each do |item|
-            attribute = item[0]
-            _upload_attachment(attribute)
-          end
+        self.class._uploaders.each do |item|
+          attribute = item[0]
+          _upload_attachment(attribute)
+        end
       end
 
       def _upload_attachment(attribute)
@@ -93,8 +93,13 @@ module Progstr
       end
 
       def _expire_all_attachments
-        _attachments.each do |item|
+        # trigger entity load
+        dummy = read_attribute(:dummy)
+        self.class._uploaders.each do |item|
           attribute = item[0]
+          #load attachment object
+          dummy = _get_attachment(attribute)
+          #schedule it for deletion
           _set_attachment(attribute, nil)
         end
       end
