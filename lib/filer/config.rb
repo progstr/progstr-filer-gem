@@ -5,7 +5,7 @@ module Progstr
       attr_accessor :host, :port, :path_prefix, :access_key, :secret_key, :session_timeout
 
       def host
-        @host ||= "api.progstr.com"
+        @host ||= "filer-api.progstr.com"
       end
       def port
         @port || 80
