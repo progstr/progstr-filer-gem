@@ -13,7 +13,7 @@ module Progstr
         @uploaders
       end
 
-      def has_uploader(attribute, uploaderClass)
+      def has_file(attribute, uploaderClass)
         class_eval <<-RUBY, __FILE__, __LINE__+1
           def #{attribute}
             _get_attachment(:#{attribute})

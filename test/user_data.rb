@@ -33,7 +33,7 @@ end
 
 
 class User < ActiveRecord::Base
-  has_uploader :avatar, MockUploader
+  has_file :avatar, MockUploader
 end
 
 
