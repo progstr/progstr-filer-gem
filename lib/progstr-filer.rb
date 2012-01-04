@@ -8,6 +8,7 @@ require 'filer/config'
 require 'filer/uploader'
 require 'filer/attachment'
 require 'filer/file_info'
+require 'filer/validation'
 require 'filer/activerecord'
 
 class ApiError < StandardError
