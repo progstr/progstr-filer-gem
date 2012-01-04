@@ -3,13 +3,13 @@ require 'test_helper'
 class TestFileMount < UserTest
   should "start with an empty uploader field" do
     empty = User.new
-    assert_true empty.avatar.empty?
+    assert_true empty.avatar.blank?
   end
 
   should "create an uploader when given a file" do
     non_empty = User.new
     non_empty.avatar = FileLike.new
-    assert_false non_empty.avatar.empty?
+    assert_false non_empty.avatar.blank?
   end
 
   should "save persist attachment id only" do

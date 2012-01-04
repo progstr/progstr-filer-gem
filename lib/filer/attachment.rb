@@ -6,7 +6,7 @@ module Progstr
       @@id_generator = ::UUID.new
 
       class EmptyAttachment
-        def empty?
+        def blank?
           true
         end
       end
@@ -35,12 +35,12 @@ module Progstr
         result
       end
 
-      def empty?
+      def blank?
         false
       end
 
       def url
-        if !empty?
+        if !blank?
           "#{Progstr::Filer.url_prefix}files/data/#{Progstr::Filer.access_key}/#{id}"
         else
           ""

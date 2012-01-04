@@ -56,7 +56,7 @@ module Progstr
 
       def _set_attachment(attribute, file)
         old_attachment = _get_attachment(attribute)
-        unless old_attachment.empty?
+        unless old_attachment.blank?
           _attachments_to_delete << old_attachment
         end
 
@@ -74,7 +74,7 @@ module Progstr
 
       def _upload_attachment(attribute)
         attachment = _get_attachment(attribute)
-        if (!attachment.empty?) && (!attachment.file.nil?)
+        if (!attachment.blank?) && (!attachment.file.nil?)
           uploader = self.class._uploaders[attribute]
           uploader.upload_attachment(attachment) unless uploader.nil?
         end
