@@ -41,6 +41,8 @@ class ValidatedUser < User
   validates_file_size :avatar,
     :less_than => 2 * 1024 * 1024,
     :message => "Not uploading more than 2 MB."
+  validates_file_extension :avatar, :allowed => ["png", "jpg"],
+    :message => "Avatar image extension not allowed."
 end
 
 class UserTest < Test::Unit::TestCase

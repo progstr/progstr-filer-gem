@@ -13,6 +13,14 @@ module Progstr
         def size
           0
         end
+
+        def path
+          ""
+        end
+
+        def extension
+          ""
+        end
       end
 
       def self.empty
@@ -34,6 +42,15 @@ module Progstr
 
       def size
         file.size
+      end
+
+      def path
+        file.path
+      end
+
+      def extension
+        from_file = File.extname(file.path) || ""
+        from_file.sub(".", "")
       end
 
       def self.from_id(attribute, id)

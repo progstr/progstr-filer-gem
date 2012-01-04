@@ -1,5 +1,5 @@
 class FileLike
-  attr_accessor :size
+  attr_accessor :size, :path
 
   def read
     "contents"
