@@ -6,7 +6,7 @@ dbconfig = {
 ActiveRecord::Base.establish_connection(dbconfig)
 ActiveRecord::Migration.verbose = false
 
-class TestUserMigration < ActiveRecord::Migration
+class UserMigration < ActiveRecord::Migration
   def self.up
     create_table :users, :force => true do |t|
       t.column :name, :string
@@ -36,13 +36,19 @@ class User < ActiveRecord::Base
   has_file :avatar, MockUploader
 end
 
+class ValidatedUser < User
+  validates_presence_of :avatar
+  validates_file_size :avatar,
+    :less_than => 2 * 1024 * 1024,
+    :message => "Not uploading more than 2 MB."
+end
 
 class UserTest < Test::Unit::TestCase
   def setup
-    TestUserMigration.up
+    UserMigration.up
   end
 
   def teardown
-    TestUserMigration.down
+    UserMigration.down
   end
 end

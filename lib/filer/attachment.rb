@@ -5,9 +5,13 @@ module Progstr
 
       @@id_generator = ::UUID.new
 
-      class EmptyAttachment
+      class EmptyAttachment < Attachment
         def blank?
           true
+        end
+
+        def size
+          0
         end
       end
 
@@ -26,6 +30,10 @@ module Progstr
       def self.generate_id
         uuid = @@id_generator.generate
         uuid.gsub("-", "")
+      end
+
+      def size
+        file.size
       end
 
       def self.from_id(attribute, id)
