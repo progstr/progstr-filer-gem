@@ -6,3 +6,10 @@ class FileLike
   end
 end
 
+class UploadedFileLike
+  attr_accessor :size, :original_filename
+
+  def read
+    "contents"
+  end
+end

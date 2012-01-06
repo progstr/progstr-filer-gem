@@ -45,11 +45,12 @@ module Progstr
       end
 
       def path
-        file.path
+        (file.original_filename if file.respond_to?(:original_filename)) ||
+          (file_path = file.path if file.respond_to?(:path))
       end
 
       def extension
-        from_file = File.extname(file.path) || ""
+        from_file = File.extname(path) || ""
         from_file.sub(".", "")
       end
 

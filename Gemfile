@@ -19,6 +19,7 @@ group :development do
 end
 
 gem "activerecord", ">=3.0.0"
+gem "activemodel", ">=3.0.0"
 gem "uuid"
 gem "rest-client"
 gem "multi_json"

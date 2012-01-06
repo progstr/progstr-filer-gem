@@ -36,23 +36,6 @@ module Progstr
 
         _uploaders[attribute] = uploaderClass.new
       end
-
-      def validates_file_extension(attribute, options)
-        allowed = options[:allowed] || EverythingIncluded.new
-        message = options[:message] || "File extension not allowed for '#{attribute}'."
-
-        validates_inclusion_of :"#{attribute}_file_extension",
-          :in        => allowed,
-          :message   => message,
-          :allow_blank => true,
-          :allow_nil => true
-      end
-
-      class EverythingIncluded
-        def include?
-          true
-        end
-      end
     end
 
     module ActiveRecordInstanceMethods

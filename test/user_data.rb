@@ -38,10 +38,10 @@ end
 
 class ValidatedUser < User
   validates_presence_of :avatar
-  validates_file_size :avatar,
+  validates_file_size_of :avatar,
     :less_than => 2 * 1024 * 1024,
     :message => "Not uploading more than 2 MB."
-  validates_file_extension :avatar, :allowed => ["png", "jpg"],
+  validates_file_extension_of :avatar, :allowed => ["png", "jpg"],
     :message => "Avatar image extension not allowed."
 end
 

@@ -13,7 +13,7 @@ class TestValidation < UserTest
     too_big.size = 5 * 1024 * 1024
     u.avatar = too_big
     assert_false u.valid?, "User not valid with huge avatar"
-    assert_equal u.errors[:avatar_file_size], ["Not uploading more than 2 MB."]
+    assert_equal u.errors[:avatar], ["Not uploading more than 2 MB."]
   end
 
   test "don't store if extension not allowed" do
@@ -23,7 +23,27 @@ class TestValidation < UserTest
     u.avatar = exe
 
     assert_false u.valid?, "User not valid with 'exe' avatar extension."
-    assert_equal u.errors[:avatar_file_extension], ["Avatar image extension not allowed."]
+    assert_equal u.errors[:avatar], ["Avatar image extension not allowed."]
+  end
+
+  test "use original_filename on file objects if present" do
+    u = ValidatedUser.new
+    exe = UploadedFileLike.new
+    exe.original_filename = "virus_infected.exe"
+    u.avatar = exe
+
+    assert_false u.valid?, "User not valid with 'exe' avatar extension."
+    assert_equal u.errors[:avatar], ["Avatar image extension not allowed."]
+  end
+
+  test "don't store files without an extension" do
+    u = ValidatedUser.new
+    exe = FileLike.new
+    exe.path = "noextension"
+    u.avatar = exe
+
+    assert_false u.valid?, "User not valid with an avatar without a file extension."
+    assert_equal u.errors[:avatar], ["Avatar image extension not allowed."]
   end
 
   test "validation passes" do
