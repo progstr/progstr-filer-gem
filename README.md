@@ -1,4 +1,4 @@
-Progstr Filer is a developer-friendly attachments hosting platform built specifically for web apps. It lets you easily associate file attachments with your ActiveRecord models and removes the hassle of actually hosting the files yourself.
+Progstr Filer is a developer-friendly file hosting platform built specifically for web apps. It lets you easily associate file attachments with your ActiveRecord models and removes the hassle of actually hosting the files yourself.
 
 ### Setting up the Ruby gem
 
