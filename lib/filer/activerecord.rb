@@ -23,12 +23,6 @@ module Progstr
           def #{attribute}=(new_file)
             _set_attachment(:#{attribute}, new_file)
           end
-          def #{attribute}_file_size
-            _get_attachment(:#{attribute}).size
-          end
-          def #{attribute}_file_extension
-            _get_attachment(:#{attribute}).extension
-          end
           def upload_#{attribute}!
             _upload_attachment(:#{attribute})
           end

@@ -1,7 +1,7 @@
 module Progstr
   module Filer
     class Attachment
-      attr_accessor :id, :attribute, :file
+      attr_accessor :id, :attribute, :file, :pre_validated
 
       @@id_generator = ::UUID.new
 
@@ -31,7 +31,9 @@ module Progstr
         result = Attachment.new
         result.id = generate_id
         result.attribute = attribute
+
         result.file = file
+        result.pre_validated = false
         result
       end
 
@@ -58,6 +60,8 @@ module Progstr
         result = Attachment.new
         result.id = id
         result.attribute = attribute
+
+        result.pre_validated = true
         result
       end
 

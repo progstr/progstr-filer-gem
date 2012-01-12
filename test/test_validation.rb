@@ -46,6 +46,20 @@ class TestValidation < UserTest
     assert_equal u.errors[:avatar], ["Avatar image extension not allowed."]
   end
 
+  test "don't validate prevalidated attachments on record update" do
+    u = ValidatedUser.new
+    u.name = "John"
+    avatar = File.open("test/adium-green-duckling.png")
+    u.avatar = avatar
+    save_success = u.save
+    assert_true save_success, "Initially valid."
+
+    loaded = ValidatedUser.find(u.id)
+    loaded.name = "Jim"
+    save_success = loaded.save
+    assert_true save_success, "Still valid on update when attachment not modified."
+  end
+
   test "validation passes" do
     u = ValidatedUser.new
     jpg = FileLike.new
