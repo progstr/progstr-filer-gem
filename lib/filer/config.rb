@@ -2,7 +2,16 @@
 module Progstr
   module Filer
     class << self
-      attr_accessor :host, :port, :path_prefix, :access_key, :secret_key, :session_timeout
+      attr_accessor :host, :port, :path_prefix, :session_timeout
+      attr_writer :access_key, :secret_key
+
+      def access_key
+        @access_key || ENV['PROGSTR_FILER_ACCESS_KEY']
+      end
+
+      def secret_key
+        @secret_key || ENV['PROGSTR_FILER_SECRET_KEY']
+      end
 
       def host
         @host ||= "filer-api.progstr.com"
