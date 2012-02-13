@@ -71,6 +71,15 @@ module Progstr
 
       def url
         if !blank?
+          token = Progstr::Filer.generate_file_auth_token(id)
+          "#{Progstr::Filer.url_prefix}files/data/#{Progstr::Filer.access_key}/#{id}?auth=#{token}"
+        else
+          ""
+        end
+      end
+
+      def public_url
+        if !blank?
           "#{Progstr::Filer.url_prefix}files/data/#{Progstr::Filer.access_key}/#{id}"
         else
           ""

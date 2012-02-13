@@ -27,11 +27,17 @@ module Progstr
       end
 
       def generate_auth_token
-        expiration_seconds = (Time.now + session_timeout).to_i
-        expiration_millis = expiration_seconds * 1000
-        data = "#{access_key}-#{expiration_millis}-#{secret_key}"
-        signature = Digest::SHA1.hexdigest(data)
-        "#{access_key}-#{expiration_millis}-#{signature}"
+        expiration = expiration_time
+        to_sign = "#{access_key}-#{expiration}-#{secret_key}"
+        signature = Digest::SHA1.hexdigest(to_sign)
+        "#{access_key}-#{expiration}-#{signature}"
+      end
+
+      def generate_file_auth_token(file_id)
+        expiration = expiration_time
+        to_sign = "#{access_key}-#{file_id}-#{expiration}-#{secret_key}"
+        signature = Digest::SHA1.hexdigest(to_sign)
+        "#{access_key}-#{expiration}-#{signature}"
       end
 
       def url_prefix
@@ -41,6 +47,13 @@ module Progstr
         else
           prefix + "/"
         end
+      end
+
+      private
+      def expiration_time
+        seconds = (Time.now + session_timeout).to_i
+        millis = seconds * 1000
+        millis
       end
     end
   end
