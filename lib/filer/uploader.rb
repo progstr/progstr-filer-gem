@@ -37,7 +37,7 @@ module Progstr
           UploadStatus.new MultiJson.decode(response)
         rescue => e
           if e.respond_to?(:response) && !e.response.nil?
-            raise ApiError.new(UploadStatus.new MultiJson.decode(e.response))
+            raise ApiError.new(MultiJson.decode(e.response))
           else
             raise
           end
