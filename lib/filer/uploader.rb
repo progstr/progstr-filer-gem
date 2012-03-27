@@ -45,20 +45,27 @@ module Progstr
       end
 
       def delete_attachment(attachment)
+        raise ApiError.new("message" => "Deleting a blank attachment.") if attachment.blank?
         url = "#{Progstr::Filer.url_prefix}files/#{attachment.id}"
         begin
           response = RestClient.delete(url, json_headers)
           UploadStatus.new MultiJson.decode(response)
+        rescue MultiJson::DecodeError => unknown_error
+          raise ApiError.new("message" => "Unknown server error when requesting #{url}:\r\n#{unknown_error}")
         rescue => e
           raise ApiError.new(MultiJson.decode(e.response))
         end
       end
 
       def file_info(attachment)
+        raise ApiError.new("message" => "Getting info for a blank attachment.") if attachment.blank?
+
         url = "#{Progstr::Filer.url_prefix}files/info/#{attachment.id}"
         begin
           response = RestClient.get(url, json_headers)
           FileInfo.new MultiJson.decode(response)
+        rescue MultiJson::DecodeError => unknown_error
+          raise ApiError.new("message" => "Unknown server error when requesting #{url}:\r\n#{unknown_error}")
         rescue => e
           raise ApiError.new(MultiJson.decode(e.response))
         end

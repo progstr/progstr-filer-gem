@@ -19,10 +19,10 @@ class ApiError < StandardError
   end
 
   def message
-    @server_response["message"]
+    server_response["message"]
   end
 
   def http_code
-    @server_response["httpCode"]
+    server_response["httpCode"]
   end
 end
