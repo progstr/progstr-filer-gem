@@ -62,9 +62,14 @@ module Progstr
           _attachments_to_delete << old_attachment
         end
 
-        attachment = Attachment.from_file(attribute, file)
-        _attachments[attribute] = attachment
-        write_attribute(attribute, attachment.id)
+        unless file.nil?
+          attachment = Attachment.from_file(attribute, file)
+          _attachments[attribute] = attachment
+          write_attribute(attribute, attachment.id)
+        else
+          _attachments[attribute] = nil
+          write_attribute(attribute, nil)
+        end
       end
 
       def _upload_attachments

@@ -23,6 +23,20 @@ class TestUploadOnSave < UserTest
     assert_same $lastDeletedAtachment.file, f1, "overwritten attachment deleted"
   end
 
+  should "delete previous attachment and null attribute if set to nil" do
+    u = User.new
+    f1 = FileLike.new
+    u.avatar = f1
+    u.save!
+
+    u.avatar = nil
+
+    u.save!
+    assert_same $lastDeletedAtachment.file, f1, "overwritten attachment deleted"
+    assert_true u.avatar.blank?
+    assert_nil u.read_attribute(:avatar)
+  end
+
   should "delete attachments on record delete" do
     u = User.new
     f1 = FileLike.new
