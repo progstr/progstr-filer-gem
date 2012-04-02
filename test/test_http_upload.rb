@@ -33,10 +33,12 @@ class TestHttpUpload < Test::Unit::TestCase
 
       attachment = Progstr::Filer::Attachment.from_file(:version, File.open("VERSION"))
       uploader = DemoUploader.new
-      response = uploader.upload_attachment attachment
-
-      assert_equal response.success, false
-      assert_match "Session expired or authorization failed", response.message,
+      begin
+        response = uploader.upload_attachment attachment
+        assert_fail "Should throw an ApiError"
+      rescue ApiError => e
+        assert_match "Session expired or authorization failed", e.message,
+      end
     ensure
       Progstr::Filer.secret_key = "DEMO"
     end
