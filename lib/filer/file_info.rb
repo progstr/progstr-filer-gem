@@ -12,9 +12,6 @@ class FileInfo
   def content_type
     @values["contentType"]
   end
-  def property
-    @values["property"]
-  end
   def uploader
     @values["uploader"]
   end

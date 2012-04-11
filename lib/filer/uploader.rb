@@ -30,7 +30,6 @@ module Progstr
           response = RestClient.post(url, {
                       :upload1 => attachment.file,
                       :authToken => Progstr::Filer.generate_auth_token,
-                      :property => attachment.attribute,
                       :uploader => self.class.name,
                       :id => attachment.id
                     }, json_headers)

@@ -11,7 +11,6 @@ class TestHttpUpload < Test::Unit::TestCase
     response = uploader.upload_attachment attachment
 
     assert_equal response.name, "VERSION"
-    assert_equal response.success, true
     assert_equal response.message, "OK"
 
     info = uploader.file_info attachment
@@ -19,7 +18,6 @@ class TestHttpUpload < Test::Unit::TestCase
     assert_equal info.name, "VERSION"
     assert_equal info.id, attachment.id
     assert_equal info.content_type, "text/plain"
-    assert_equal info.property, "version"
     assert_equal info.uploader, "DemoUploader"
     assert_true info.size > 0
 
