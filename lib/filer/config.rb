@@ -33,9 +33,16 @@ module Progstr
         "#{access_key}-#{expiration}-#{signature}"
       end
 
-      def generate_file_auth_token(file_id)
+      def generate_download_auth_token(file_id)
         expiration = expiration_time
         to_sign = "#{access_key}-#{file_id}-#{expiration}-#{secret_key}"
+        signature = Digest::SHA1.hexdigest(to_sign)
+        "#{access_key}-#{expiration}-#{signature}"
+      end
+
+      def generate_upload_auth_token(uploader)
+        expiration = expiration_time
+        to_sign = "#{access_key}-#{uploader}-#{expiration}-#{secret_key}"
         signature = Digest::SHA1.hexdigest(to_sign)
         "#{access_key}-#{expiration}-#{signature}"
       end

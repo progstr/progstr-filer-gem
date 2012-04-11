@@ -12,7 +12,14 @@ class TestFileMount < UserTest
     assert_false non_empty.avatar.blank?
   end
 
-  should "save persist attachment id only" do
+  should "create an uploader when given an id string" do
+    non_empty = User.new
+    non_empty.avatar = "some-string-id"
+    assert_false non_empty.avatar.blank?
+    assert_equal "some-string-id", non_empty.avatar.id
+  end
+
+  should "persist attachment id only" do
     u = User.new
     u.avatar = FileLike.new
     assert_not_nil u.avatar.id, "attachment id generated"

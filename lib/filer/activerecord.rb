@@ -56,14 +56,18 @@ module Progstr
         end
       end
 
-      def _set_attachment(attribute, file)
+      def _set_attachment(attribute, value)
         old_attachment = _get_attachment(attribute)
         unless old_attachment.blank?
           _attachments_to_delete << old_attachment
         end
 
-        unless file.nil?
-          attachment = Attachment.from_file(attribute, file)
+        if value.kind_of?(String)
+          attachment = Attachment.from_id(attribute, value)
+          _attachments[attribute] = attachment
+          write_attribute(attribute, value)
+        elsif !value.nil? #file-like
+          attachment = Attachment.from_file(attribute, value)
           _attachments[attribute] = attachment
           write_attribute(attribute, attachment.id)
         else
