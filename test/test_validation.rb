@@ -8,7 +8,7 @@ class TestValidation < UserTest
 
   test "don't store if size greater than 2MB" do
     u = ValidatedUser.new
-    too_big = FileLike.new
+    too_big = FileMock.new
     too_big.path = "too_big.png"
     too_big.size = 5 * 1024 * 1024
     u.avatar = too_big
@@ -18,7 +18,7 @@ class TestValidation < UserTest
 
   test "don't store if extension not allowed" do
     u = ValidatedUser.new
-    exe = FileLike.new
+    exe = FileMock.new
     exe.path = "virus_infected.exe"
     u.avatar = exe
 
@@ -28,7 +28,7 @@ class TestValidation < UserTest
 
   test "use original_filename on file objects if present" do
     u = ValidatedUser.new
-    exe = UploadedFileLike.new
+    exe = UploadedFileMock.new
     exe.original_filename = "virus_infected.exe"
     u.avatar = exe
 
@@ -38,7 +38,7 @@ class TestValidation < UserTest
 
   test "don't store files without an extension" do
     u = ValidatedUser.new
-    exe = FileLike.new
+    exe = FileMock.new
     exe.path = "noextension"
     u.avatar = exe
 
@@ -62,7 +62,7 @@ class TestValidation < UserTest
 
   test "validation passes" do
     u = ValidatedUser.new
-    jpg = FileLike.new
+    jpg = FileMock.new
     jpg.path = "avatar.jpg"
     u.avatar = jpg
 

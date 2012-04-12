@@ -1,4 +1,4 @@
-class FileLike
+class FileMock
   attr_accessor :size, :path
 
   def read
@@ -6,7 +6,7 @@ class FileLike
   end
 end
 
-class UploadedFileLike
+class UploadedFileMock
   attr_accessor :size, :original_filename
 
   def read

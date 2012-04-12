@@ -5,7 +5,7 @@ require 'progstr-filer'
 
 require 'test/unit'
 require 'shoulda'
-require 'file_like'
+require 'file_mock'
 require 'user_data'
 require 'pp'
 

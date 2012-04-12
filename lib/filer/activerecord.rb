@@ -63,9 +63,14 @@ module Progstr
         end
 
         if value.kind_of?(String)
-          attachment = Attachment.from_id(attribute, value)
+          attachment = nil
+          if value.include?("{")
+            attachment = Attachment.from_json(attribute, value)
+          else
+            attachment = Attachment.from_id(attribute, value)
+          end
           _attachments[attribute] = attachment
-          write_attribute(attribute, value)
+          write_attribute(attribute, attachment.id)
         elsif !value.nil? #file-like
           attachment = Attachment.from_file(attribute, value)
           _attachments[attribute] = attachment
@@ -85,7 +90,7 @@ module Progstr
 
       def _upload_attachment(attribute)
         attachment = _get_attachment(attribute)
-        if (!attachment.blank?) && (!attachment.file.nil?)
+        if attachment.need_upload?
           uploader = self.class._uploaders[attribute]
           uploader.upload_attachment(attachment) unless uploader.nil?
         end

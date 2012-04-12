@@ -1,5 +1,23 @@
 module Progstr
   module Filer
+    class FileLike
+      def initialize(json)
+        @values = MultiJson.decode(json)
+      end
+
+      def id
+        @values["id"]
+      end
+
+      def path
+        @values["name"]
+      end
+
+      def size
+        @values["size"]
+      end
+    end
+
     class Attachment
       attr_accessor :id, :attribute, :file, :pre_validated
 
@@ -9,17 +27,20 @@ module Progstr
         def blank?
           true
         end
-
         def size
           0
         end
-
         def path
           ""
         end
-
         def extension
           ""
+        end
+        def display_json
+          nil
+        end
+        def need_upload?
+          false
         end
       end
 
@@ -27,14 +48,29 @@ module Progstr
         EmptyAttachment.new
       end
 
+      def self.from_json(attribute, json)
+        file = FileLike.new(json)
+        result = from_file(attribute, file)
+        result.pre_validated = true
+        return result
+      end
+
       def self.from_file(attribute, file)
         result = Attachment.new
-        result.id = generate_id
+        result.id = file_id(file)
         result.attribute = attribute
 
         result.file = file
         result.pre_validated = false
         result
+      end
+
+      def self.file_id(file)
+        if file.respond_to?(:id)
+          file.id
+        else
+          generate_id
+        end
       end
 
       def self.generate_id
@@ -83,6 +119,25 @@ module Progstr
           "#{Progstr::Filer.url_prefix}files/data/#{Progstr::Filer.access_key}/#{id}"
         else
           ""
+        end
+      end
+
+      def display_json
+        values = {
+          "name" => path,
+          "size" => size,
+          "id" => id
+        }
+        MultiJson.encode(values)
+      end
+
+      def need_upload?
+        if file.nil?
+          false
+        elsif file.kind_of?(FileLike)
+          false
+        else
+          true
         end
       end
     end
