@@ -6,7 +6,7 @@ end
 class TestHttpUpload < Test::Unit::TestCase
   # The mother of all tests calling the real API
   test "upload attachment" do
-    attachment = Progstr::Filer::Attachment.from_file(:version, File.open("VERSION"))
+    attachment = Progstr::Filer::Attachment.from_file(MockUploader, :version, File.open("VERSION"))
     uploader = DemoUploader.new
     response = uploader.upload_attachment attachment
 
@@ -29,7 +29,7 @@ class TestHttpUpload < Test::Unit::TestCase
     begin
       Progstr::Filer.secret_key = "BROKEN"
 
-      attachment = Progstr::Filer::Attachment.from_file(:version, File.open("VERSION"))
+      attachment = Progstr::Filer::Attachment.from_file(MockUploader, :version, File.open("VERSION"))
       uploader = DemoUploader.new
       begin
         response = uploader.upload_attachment attachment

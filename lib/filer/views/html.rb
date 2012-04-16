@@ -48,8 +48,10 @@ EOJSON
         options.each do |k, v|
           client_options[k.to_s.camelize(:lower)] = v
         end
+        uploader_name = attachment.uploader_class.name
+        client_options["uploader"] = uploader_name
         client_options["initialFiles"] = [attachment.display_hash] unless attachment.blank?
-        client_options["authToken"] = Progstr::Filer.generate_upload_auth_token(client_options["uploader"])
+        client_options["authToken"] = Progstr::Filer.generate_upload_auth_token(uploader_name)
         client_options["uploadUrl"] = Progstr::Filer.upload_url unless Progstr::Filer.upload_url.nil?
 
         client_options

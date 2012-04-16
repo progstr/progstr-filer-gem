@@ -19,7 +19,7 @@ module Progstr
     end
 
     class Attachment
-      attr_accessor :id, :attribute, :file, :pre_validated
+      attr_accessor :id, :uploader_class, :attribute, :file, :pre_validated
 
       @@id_generator = ::UUID.new
 
@@ -47,21 +47,24 @@ module Progstr
         end
       end
 
-      def self.empty
-        EmptyAttachment.new
+      def self.empty(uploader_class)
+        result = EmptyAttachment.new
+        result.uploader_class = uploader_class
+        result
       end
 
-      def self.from_json(attribute, json)
+      def self.from_json(uploader_class, attribute, json)
         file = FileLike.new(json)
-        result = from_file(attribute, file)
+        result = from_file(uploader_class, attribute, file)
         result.pre_validated = true
         return result
       end
 
-      def self.from_file(attribute, file)
+      def self.from_file(uploader_class, attribute, file)
         result = Attachment.new
         result.id = file_id(file)
         result.attribute = attribute
+        result.uploader_class = uploader_class
 
         result.file = file
         result.pre_validated = false
@@ -95,10 +98,11 @@ module Progstr
         from_file.sub(".", "")
       end
 
-      def self.from_id(attribute, id)
+      def self.from_id(uploader_class, attribute, id)
         result = Attachment.new
         result.id = id
         result.attribute = attribute
+        result.uploader_class = uploader_class
 
         result.pre_validated = true
         result

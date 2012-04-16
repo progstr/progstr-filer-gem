@@ -46,10 +46,11 @@ module Progstr
       def _get_attachment(attribute)
         if _attachments[attribute].nil?
           id = read_attribute(attribute)
+          uploader_class = self.class._uploaders[attribute].class
           if id.nil?
-            _attachments[attribute] = Attachment.empty
+            _attachments[attribute] = Attachment.empty(uploader_class)
           else
-            _attachments[attribute] = Attachment.from_id(attribute, id)
+            _attachments[attribute] = Attachment.from_id(uploader_class, attribute, id)
           end
         else
           _attachments[attribute]
@@ -62,17 +63,18 @@ module Progstr
           _attachments_to_delete << old_attachment
         end
 
+        uploader_class = self.class._uploaders[attribute].class
         if value.kind_of?(String)
           attachment = nil
           if value.include?("{")
-            attachment = Attachment.from_json(attribute, value)
+            attachment = Attachment.from_json(uploader_class, attribute, value)
           else
-            attachment = Attachment.from_id(attribute, value)
+            attachment = Attachment.from_id(uploader_class, attribute, value)
           end
           _attachments[attribute] = attachment
           write_attribute(attribute, attachment.id)
         elsif !value.nil? #file-like
-          attachment = Attachment.from_file(attribute, value)
+          attachment = Attachment.from_file(uploader_class, attribute, value)
           _attachments[attribute] = attachment
           write_attribute(attribute, attachment.id)
         else
