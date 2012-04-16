@@ -11,6 +11,7 @@ require 'filer/file_info'
 require 'filer/validation'
 require 'filer/activerecord'
 require 'filer/views/html'
+require 'filer/views/form_html'
 
 class ApiError < StandardError
   attr_accessor :server_response
