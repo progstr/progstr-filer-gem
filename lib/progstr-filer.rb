@@ -10,6 +10,7 @@ require 'filer/attachment'
 require 'filer/file_info'
 require 'filer/validation'
 require 'filer/activerecord'
+require 'filer/views/html'
 
 class ApiError < StandardError
   attr_accessor :server_response

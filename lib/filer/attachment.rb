@@ -36,6 +36,9 @@ module Progstr
         def extension
           ""
         end
+        def display_hash
+          nil
+        end
         def display_json
           nil
         end
@@ -123,12 +126,15 @@ module Progstr
       end
 
       def display_json
-        values = {
+        MultiJson.encode(display_hash)
+      end
+
+      def display_hash
+        {
           "name" => path,
           "size" => size,
           "id" => id
         }
-        MultiJson.encode(values)
       end
 
       def need_upload?

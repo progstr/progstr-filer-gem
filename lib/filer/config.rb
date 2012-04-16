@@ -2,7 +2,7 @@
 module Progstr
   module Filer
     class << self
-      attr_accessor :host, :port, :path_prefix, :session_timeout
+      attr_accessor :host, :port, :path_prefix, :session_timeout, :asset_url_prefix, :upload_url
       attr_writer :access_key, :secret_key
 
       def access_key
@@ -16,6 +16,15 @@ module Progstr
       def host
         @host ||= "filer-api.progstr.com"
       end
+
+      def default_asset_url_prefix
+        "http://filer-api.progstr.com/public/upload"
+      end
+
+      def default_upload_url
+        "http://#{Progstr::Filer.host}/upload/new"
+      end
+
       def port
         @port || 80
       end
