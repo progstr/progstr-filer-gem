@@ -2,7 +2,7 @@
 module Progstr
   module Filer
     class << self
-      attr_accessor :host, :port, :path_prefix, :session_timeout, :asset_url_prefix, :upload_url
+      attr_accessor :host, :port, :path_prefix, :session_timeout, :asset_url_prefix, :upload_url, :use_ssl
       attr_writer :access_key, :secret_key
 
       def access_key
@@ -18,7 +18,13 @@ module Progstr
       end
 
       def default_asset_url_prefix
-        "http://filer-api.progstr.com/public/upload"
+        insecure_prefix = "http://cdn.progstr.com/upload/"
+        secure_prefix = "https://s3.amazonaws.com/cdn.progstr.com/upload/"
+        javascript_version = "1.0"
+
+        prefix = insecure_prefix
+        prefix = secure_prefix if use_ssl
+        prefix + javascript_version
       end
 
       def default_upload_url

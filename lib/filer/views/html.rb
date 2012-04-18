@@ -23,11 +23,8 @@ EOJSON
         prefix = Progstr::Filer.asset_url_prefix || Progstr::Filer.default_asset_url_prefix
 
         scripts = [
-          "/pl/plupload.js",
-          "/pl/plupload.flash.js",
-          "/pl/plupload.html5.js",
           "/upload.js",
-          "/upload.jquery.js",
+          "/pl/flash.support.js",
         ]
         tags = scripts.map do |script|
           javascript_include_tag (prefix + script)
