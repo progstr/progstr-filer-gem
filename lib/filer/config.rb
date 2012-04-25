@@ -38,7 +38,7 @@ module Progstr
         @path_prefix ||= '/'
       end
       def session_timeout
-        @http_read_timeout ||= 30 * 60 # 30 minutes
+        @session_timeout ||= 30 * 60 # 30 minutes
       end
 
       def generate_auth_token
