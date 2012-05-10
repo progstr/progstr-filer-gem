@@ -35,7 +35,7 @@ class TestHttpUpload < Test::Unit::TestCase
         response = uploader.upload_attachment attachment
         assert_fail "Should throw an ApiError"
       rescue ApiError => e
-        assert_match "Session expired or authorization failed", e.message,
+        assert_match "Auth token not valid", e.message,
       end
     ensure
       Progstr::Filer.secret_key = "DEMO"
