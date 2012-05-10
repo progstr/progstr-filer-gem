@@ -14,7 +14,7 @@ module Progstr
     })
 EOJSON
 
-        tag("div", "id" => client_id) +
+        "<div id=\"#{client_id}\"></div>".html_safe +
           javascript_tag(init_script)
       end
 
