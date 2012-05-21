@@ -26,6 +26,7 @@ module Progstr
 
       def upload_attachment(attachment)
         url = "#{Progstr::Filer.url_prefix}upload/new"
+        puts "upload to: #{url}"
         begin
           response = RestClient.post(url, {
                       :upload1 => attachment.file,
@@ -33,7 +34,9 @@ module Progstr
                       :uploader => self.class.name,
                       :id => attachment.id
                     }, json_headers)
-          UploadStatus.new MultiJson.decode(response)
+          result = UploadStatus.new MultiJson.decode(response)
+          attachment.mark_uploaded!
+          result
         rescue => e
           if e.respond_to?(:response) && !e.response.nil?
             raise ApiError.new(MultiJson.decode(e.response))

@@ -25,6 +25,7 @@ $lastDeletedAtachment = nil
 class MockUploader < Progstr::Filer::Uploader
   def upload_attachment(attachment)
     $lastUploadedAtachment = attachment
+    attachment.mark_uploaded!
   end
   def delete_attachment(attachment)
     $lastDeletedAtachment = attachment

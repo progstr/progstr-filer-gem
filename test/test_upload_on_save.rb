@@ -31,6 +31,17 @@ class TestUploadOnSave < UserTest
     assert_equal "7933ad9a0f93457ab625a070fec3544f", saved_id
   end
 
+  should "not upload already uploaded attachments" do
+    u = User.new
+    f = FileMock.new
+    u.avatar = f
+    u.save!
+
+    $lastUploadedAtachment = nil
+    u.save!
+    assert_nil $lastUploadedAtachment
+  end
+
   should "delete the previous attachment on save" do
     u = User.new
     f1 = FileMock.new

@@ -141,8 +141,17 @@ module Progstr
         }
       end
 
+      def uploaded?
+        @uploaded == true
+      end
+      def mark_uploaded!
+        @uploaded = true
+      end
+
       def need_upload?
-        if file.nil?
+        if uploaded?
+          false
+        elsif file.nil?
           false
         elsif file.kind_of?(FileLike)
           false
