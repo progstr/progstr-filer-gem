@@ -1,5 +1,6 @@
 require 'pp'
 require 'digest'
+require 'multi_json'
 require 'rest-client'
 require 'uuid'
 UUID.state_file = false
